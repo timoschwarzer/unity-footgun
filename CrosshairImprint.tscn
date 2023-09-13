@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://85dqyeefutfn"]
+[gd_scene load_steps=6 format=3 uid="uid://qqajy84byu75"]
 
 [ext_resource type="Script" path="res://CrosshairImprint.gd" id="1_hh02m"]
 [ext_resource type="Texture2D" uid="uid://bey2slvvgck65" path="res://assets/crosshair2.png" id="1_uvhpu"]

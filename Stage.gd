@@ -87,7 +87,7 @@ func spawn_flying_object():
 	var viewport_size = get_viewport_rect().size
 	var instance := FlyingObject.instantiate()
 	instance.global_position = Vector2(randf_range(100, viewport_size.x - 100), viewport_size.y + 50)
-	instance.linear_velocity = Vector2(randf_range(-300, 300), randf_range(-viewport_size.y * 0.8, -viewport_size.y * 1.5))
+	instance.linear_velocity = Vector2(randf_range(-300, 300), randf_range(-viewport_size.y * 0.8, -viewport_size.y * 1.2))
 	instance.angular_velocity = randf_range(-1.5, 1.5)
 	flying_objects_container.add_child(instance)
 	
@@ -102,7 +102,7 @@ func end_game():
 	try_again.visible = true
 	highscore_label.text = 'Highscore: %sK €' % make_score_string(highscore)
 	get_tree().create_tween().tween_property(crosshair, 'mouse_pos_snap_pos_ratio', 0.0, 1.0).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
-	get_tree().create_tween().tween_property(try_again, 'modulate', Color.WHITE, 1.0)
+	get_tree().create_tween().tween_property(try_again, 'modulate', Color.WHITE, 0.3).set_delay(1.0)
 	animation_player.play('amogus')
 
 func restart_game():

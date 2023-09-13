@@ -1,13 +1,14 @@
-[gd_scene load_steps=15 format=3 uid="uid://bqumu08tqr6e7"]
+[gd_scene load_steps=19 format=3 uid="uid://blmoifdc73hih"]
 
 [ext_resource type="Script" path="res://Stage.gd" id="1_iiwl1"]
-[ext_resource type="PackedScene" uid="uid://bomdio0wj7dkt" path="res://Crosshair.tscn" id="2_ukxpg"]
+[ext_resource type="PackedScene" uid="uid://xjv3xril7xdd" path="res://Crosshair.tscn" id="2_ukxpg"]
 [ext_resource type="FontFile" uid="uid://bgdespvtl5tmn" path="res://assets/Handjet-Regular.ttf" id="3_dq0mj"]
 [ext_resource type="Texture2D" uid="uid://h0m0l2tywyoa" path="res://assets/Button1.png" id="4_umgto"]
 [ext_resource type="Texture2D" uid="uid://evuiymxh5a1j" path="res://assets/Button2.png" id="5_ckp8u"]
 [ext_resource type="Texture2D" uid="uid://dsvm27vin3a7n" path="res://assets/Unity_logo.png" id="5_w80pv"]
 [ext_resource type="Texture2D" uid="uid://cxfgeuh1y2vng" path="res://assets/godotus.png" id="6_5rgjs"]
 [ext_resource type="Script" path="res://Camera.gd" id="6_kjyxc"]
+[ext_resource type="Texture2D" uid="uid://bctp77jcm41ou" path="res://assets/not-made-with-unity-transparent.png" id="9_aw7rj"]
 
 [sub_resource type="Gradient" id="Gradient_x1nli"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
@@ -103,6 +104,81 @@ tracks/2/keys = {
 _data = {
 "RESET": SubResource("Animation_b2tkh"),
 "amogus": SubResource("Animation_piuyi")
+}
+
+[sub_resource type="Animation" id="Animation_h2372"]
+resource_name = "initial"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1.5, 1.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Background:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.8),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.8),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart_game"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_1c2uc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Background:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_resed"]
+_data = {
+"RESET": SubResource("Animation_1c2uc"),
+"initial": SubResource("Animation_h2372")
 }
 
 [node name="Stage" type="Control"]
@@ -236,5 +312,38 @@ libraries = {
 [node name="Camera" type="Camera2D" parent="."]
 anchor_mode = 0
 script = ExtResource("6_kjyxc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="TextureRect" parent="CanvasLayer"]
+self_modulate = Color(0.141176, 0.121569, 0.129412, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = SubResource("NoiseTexture2D_aw7pj")
+
+[node name="Splash" type="TextureRect" parent="CanvasLayer/Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -445.5
+offset_top = -251.5
+offset_right = 445.5
+offset_bottom = 251.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_aw7rj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+autoplay = "initial"
+libraries = {
+"": SubResource("AnimationLibrary_resed")
+}
 
 [connection signal="pressed" from="UIRoot/TryAgain/VBoxContainer/YesButton" to="." method="_on_yes_button_pressed"]

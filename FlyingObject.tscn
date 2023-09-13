@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://capnfqe17wj1a"]
+[gd_scene load_steps=10 format=3 uid="uid://dslbhnsuw3yvy"]
 
 [ext_resource type="Script" path="res://FlyingObject.gd" id="1_aiadf"]
 [ext_resource type="Texture2D" uid="uid://cfe2j22r5ow51" path="res://assets/coin_outline.png" id="2_vv1jq"]

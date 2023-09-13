@@ -1,3 +1,3 @@
 extends Node
 
-var active := true
+var active := false
