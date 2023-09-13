@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqumu08tqr6e7"]
+
+[ext_resource type="Script" path="res://Stage.gd" id="1_iiwl1"]
+[ext_resource type="PackedScene" uid="uid://bomdio0wj7dkt" path="res://Crosshair.tscn" id="2_ukxpg"]
+
+[node name="Stage" type="Node2D"]
+script = ExtResource("1_iiwl1")
+
+[node name="FlyingObjectsContainer" type="Node2D" parent="."]
+
+[node name="Crosshair" parent="." instance=ExtResource("2_ukxpg")]

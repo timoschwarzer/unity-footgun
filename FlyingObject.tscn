@@ -1,0 +1,129 @@
+[gd_scene load_steps=11 format=3 uid="uid://capnfqe17wj1a"]
+
+[ext_resource type="Texture2D" uid="uid://bvhymfnyub4vu" path="res://assets/coin.png" id="1_6fwic"]
+[ext_resource type="Script" path="res://FlyingObject.gd" id="1_aiadf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yl21u"]
+radius = 117.017
+
+[sub_resource type="Animation" id="Animation_rwl1c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ExplodeParticles:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_7j6js"]
+resource_name = "explode"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ExplodeParticles:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dn8m1"]
+_data = {
+"RESET": SubResource("Animation_rwl1c"),
+"explode": SubResource("Animation_7j6js")
+}
+
+[sub_resource type="Gradient" id="Gradient_ml4j7"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_axbp2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rfeft"]
+width = 1
+height = 1
+color_ramp = SubResource("Gradient_ml4j7")
+noise = SubResource("FastNoiseLite_axbp2")
+
+[sub_resource type="Curve" id="Curve_pvtu2"]
+_data = [Vector2(0, 0.991649), 0.0, -3.49446, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="FlyingObject" type="RigidBody2D"]
+collision_mask = 0
+script = ExtResource("1_aiadf")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_6fwic")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yl21u")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_dn8m1")
+}
+
+[node name="ExplodeParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 10
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+texture = SubResource("NoiseTexture2D_rfeft")
+spread = 180.0
+gravity = Vector2(0, 200)
+initial_velocity_min = 500.0
+initial_velocity_max = 900.0
+damping_min = 1000.0
+damping_max = 2000.0
+scale_amount_min = 100.0
+scale_amount_max = 100.0
+scale_amount_curve = SubResource("Curve_pvtu2")
