@@ -1,10 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://bomdio0wj7dkt"]
+[gd_scene load_steps=6 format=3 uid="uid://bomdio0wj7dkt"]
 
 [ext_resource type="Script" path="res://Crosshair.gd" id="1_5ki7d"]
 [ext_resource type="Texture2D" uid="uid://b0d4dvk7issy" path="res://assets/crosshair1.png" id="2_88ivv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jjlvh"]
-radius = 457.01
+radius = 1.0
+
+[sub_resource type="Curve" id="Curve_57vrr"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_cyt6e"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Crosshair" type="Node2D"]
 script = ExtResource("1_5ki7d")
@@ -13,12 +20,19 @@ script = ExtResource("1_5ki7d")
 
 [node name="FootDetectArea" type="Area2D" parent="TransformReset"]
 
-[node name="CollisionShape" type="CollisionShape2D" parent="TransformReset/FootDetectArea"]
+[node name="FootDetectShape" type="CollisionShape2D" parent="TransformReset/FootDetectArea"]
 shape = SubResource("CircleShape2D_jjlvh")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(10, 10)
 texture = ExtResource("2_88ivv")
+
+[node name="DetachLine" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 100, 0)
+width_curve = SubResource("Curve_57vrr")
+gradient = SubResource("Gradient_cyt6e")
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [connection signal="body_entered" from="TransformReset/FootDetectArea" to="." method="_on_foot_detect_area_body_entered"]
 [connection signal="body_exited" from="TransformReset/FootDetectArea" to="." method="_on_foot_detect_area_body_exited"]

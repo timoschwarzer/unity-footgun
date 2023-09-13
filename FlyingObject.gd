@@ -9,7 +9,17 @@ var exploded = false
 
 func become_foot():
 	sprite.texture = preload('res://assets/foot.png')
+	explode_particles.texture = preload('res://assets/foot_particles.png')
 	add_to_group('feet')
+
+func become_money():
+	match randi() % 2:
+		0:
+			sprite.texture = preload('res://assets/coin_outline.png')
+			explode_particles.texture = preload('res://assets/gold_particles.png')
+		1:
+			sprite.texture = preload('res://assets/bag_outline.png')
+			explode_particles.texture = preload('res://assets/gold_particles.png')
 
 func _process(delta: float) -> void:
 	explode_particles.global_rotation = 0.0

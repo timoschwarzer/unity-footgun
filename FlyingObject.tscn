@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://capnfqe17wj1a"]
+[gd_scene load_steps=10 format=3 uid="uid://capnfqe17wj1a"]
 
-[ext_resource type="Texture2D" uid="uid://bvhymfnyub4vu" path="res://assets/coin.png" id="1_6fwic"]
 [ext_resource type="Script" path="res://FlyingObject.gd" id="1_aiadf"]
+[ext_resource type="Texture2D" uid="uid://cfe2j22r5ow51" path="res://assets/coin_outline.png" id="2_vv1jq"]
+[ext_resource type="Texture2D" uid="uid://cq26utm5mrj53" path="res://assets/gold_particles.png" id="3_7prx3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yl21u"]
 radius = 117.017
@@ -80,16 +81,11 @@ _data = {
 "explode": SubResource("Animation_7j6js")
 }
 
-[sub_resource type="Gradient" id="Gradient_ml4j7"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_axbp2"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rfeft"]
-width = 1
-height = 1
-color_ramp = SubResource("Gradient_ml4j7")
-noise = SubResource("FastNoiseLite_axbp2")
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_oq23s"]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [sub_resource type="Curve" id="Curve_pvtu2"]
 _data = [Vector2(0, 0.991649), 0.0, -3.49446, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -101,7 +97,7 @@ script = ExtResource("1_aiadf")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(4, 4)
-texture = ExtResource("1_6fwic")
+texture = ExtResource("2_vv1jq")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_yl21u")
@@ -112,18 +108,19 @@ libraries = {
 }
 
 [node name="ExplodeParticles" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_oq23s")
 emitting = false
 amount = 10
-one_shot = true
 explosiveness = 1.0
 local_coords = true
-texture = SubResource("NoiseTexture2D_rfeft")
+texture = ExtResource("3_7prx3")
 spread = 180.0
 gravity = Vector2(0, 200)
 initial_velocity_min = 500.0
 initial_velocity_max = 900.0
 damping_min = 1000.0
 damping_max = 2000.0
-scale_amount_min = 100.0
-scale_amount_max = 100.0
+scale_amount_min = 8.0
+scale_amount_max = 8.0
 scale_amount_curve = SubResource("Curve_pvtu2")
+anim_offset_max = 1.0
