@@ -10,6 +10,7 @@ const CrosshairImprint = preload('res://CrosshairImprint.tscn')
 @onready var try_again = $UIRoot/TryAgain
 @onready var camera = $Camera
 @onready var animation_player = $UIRoot/TryAgain/AnimationPlayer
+@onready var tutorial_label = $UIRoot/TutorialLabel
 
 const FREQUENCY_MIN = 0.2
 const FREQUENCY_MAX = 1.0
@@ -17,17 +18,20 @@ const FREQUENCY_STEP = 0.02
 const MAX_FOOT_DETECT_RADIUS = 450.0
 const MAX_FOOT_DETECT_RADIUS_HIGHSCORE_THRESHOLD = 10000.0
 
+var tutorial_done := false
 var frequency = FREQUENCY_MAX
 var spawn_timeout = 0.0
 var score = 0
 var displayed_score: int = 0
 var highscore: int = 0
+var touch_shot_scheduled := false
 
 func _process(delta: float) -> void:
 	if GameState.active:
 		spawn_timeout -= delta
 		
-		if Input.is_action_just_pressed('shoot'):
+		if Input.is_action_just_pressed('shoot') || touch_shot_scheduled:
+			touch_shot_scheduled = false
 			var crosshair_imprint_instance = CrosshairImprint.instantiate()
 			crosshair_imprint_instance.global_position = crosshair.global_position
 			add_child(crosshair_imprint_instance)
@@ -60,6 +64,10 @@ func _process(delta: float) -> void:
 				else:
 					var added_points = randi_range(100, 200)
 					score += added_points
+					
+					if !tutorial_done:
+						tutorial_done = true
+						get_tree().create_tween().tween_property(tutorial_label, 'modulate', Color(1.0, 1.0, 1.0, 0.0), 0.5)
 				
 				if score < 1:
 					end_game()
@@ -76,6 +84,10 @@ func _process(delta: float) -> void:
 			spawn_timeout = frequency
 	
 	score_label.text = '%sK €' % make_score_string(displayed_score)
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch && event.index == 1 && event.pressed:
+		touch_shot_scheduled = true
 
 func make_score_string(value):
 	var score_string = str(value)
@@ -101,7 +113,7 @@ func end_game():
 	try_again.modulate.a = 0
 	try_again.visible = true
 	highscore_label.text = 'Highscore: %sK €' % make_score_string(highscore)
-	get_tree().create_tween().tween_property(crosshair, 'mouse_pos_snap_pos_ratio', 0.0, 1.0).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+	get_tree().create_tween().tween_property(crosshair, 'aim_pos_snap_pos_ratio', 0.0, 1.0).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	get_tree().create_tween().tween_property(try_again, 'modulate', Color.WHITE, 0.3).set_delay(1.0)
 	animation_player.play('amogus')
 
