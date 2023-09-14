@@ -25,6 +25,7 @@ var score = 0
 var displayed_score: int = 0
 var highscore: int = 0
 var touch_shot_scheduled := false
+var can_restart_game := false
 
 func _process(delta: float) -> void:
 	if GameState.active:
@@ -117,7 +118,10 @@ func end_game():
 	try_again.visible = true
 	highscore_label.text = 'Highscore: %sK €' % make_score_string(highscore)
 	get_tree().create_tween().tween_property(crosshair, 'aim_pos_snap_pos_ratio', 0.0, 1.0).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
-	get_tree().create_tween().tween_property(try_again, 'modulate', Color.WHITE, 0.3).set_delay(1.0)
+	get_tree().create_tween().tween_property(try_again, 'modulate', Color.WHITE, 0.3).set_delay(1.0).finished.connect(
+		func():
+			can_restart_game = true
+	)
 	animation_player.play('amogus')
 
 func restart_game():
@@ -132,9 +136,10 @@ func update_foot_detect_radius():
 	crosshair.foot_detect_radius = min((highscore / MAX_FOOT_DETECT_RADIUS_HIGHSCORE_THRESHOLD), 1.0) * MAX_FOOT_DETECT_RADIUS
 
 func _on_yes_button_pressed() -> void:
-	if GameState.active:
+	if GameState.active || !can_restart_game:
 		return
 	
+	can_restart_game = false
 	restart_game()
 	
 	var tween = get_tree().create_tween()
