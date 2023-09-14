@@ -86,8 +86,11 @@ func _process(delta: float) -> void:
 	score_label.text = '%sK €' % make_score_string(displayed_score)
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch && event.index == 1 && event.pressed:
-		touch_shot_scheduled = true
+	if event is InputEventScreenTouch && event.pressed:
+		if event.index == 1 && GameState.active:
+			touch_shot_scheduled = true
+		elif !GameState.active:
+			_on_yes_button_pressed()
 
 func make_score_string(value):
 	var score_string = str(value)

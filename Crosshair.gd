@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch || event is InputEventScreenDrag:
 		if event.index == 0:
-			aim_pos = get_viewport_transform().affine_inverse() * event.position - Vector2(0, 150)
+			aim_pos = get_viewport_transform().affine_inverse() * event.position + Vector2(100, -150)
 	elif event is InputEventMouse:
 		aim_pos = event.position
 
