@@ -96,7 +96,7 @@ func _input(event: InputEvent) -> void:
 func make_score_string(value):
 	var score_string = str(value)
 	for i in range(score_string.length() - 3, 0, -3):
-		score_string = score_string.insert(i, '.')
+		score_string = score_string.insert(i, ',')
 	return score_string
 
 func spawn_flying_object():
